@@ -9,8 +9,8 @@ app = FastAPI()
 
 @app.get("/")
 def home():
-    return JSONResponse({"Keterangan Service": 
-                         "Web service ini bisa digunakan untuk menganalisis sentiment, spam, atau hate speech",
+    return JSONResponse({"Nama Webservice":"TextAnalyzer!!!",
+                         "Kegunaan": "Web service ini bisa digunakan untuk menganalisis sentiment, spam, atau hate speech dari minimal 1 teks masukan",
                          "Bahasa":"Web service ini bisa digunakan untuk semua bahasa"})
 
 
