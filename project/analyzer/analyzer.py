@@ -21,16 +21,12 @@ def transalate(text):
     translator = Translator()
     return translator.translate(text, des='en').text
      
-def remove_html_tags(text):
+def remove_special_character(text):
         clean_text = re.sub(r'<.*?>', '', text)
+        clean_text = re.sub(r'http\S+', '', clean_text)
+        clean_text = re.sub(r'[^a-zA-Z0-9\s]', '', clean_text)
+        clean_text = ''.join(ch for ch in clean_text if ch not in string.punctuation)
         return clean_text
-
-def remove_urls(text):
-    clean_text = re.sub(r'http\S+', '', text)
-    return clean_text
-
-def convert_to_lowercase(text):
-    return text.lower()
 
 def replace_chat_words(text):
     chat_words = {
@@ -69,32 +65,17 @@ def replace_chat_words(text):
         text = text.replace(word, expanded_form)
     return text
 
-def remove_punctuation(text):
-    clean_text = ''.join(ch for ch in text if ch not in string.punctuation)
-    return clean_text
-
 def remove_stopwords(text):
     stop_words = set(stopwords.words('english'))
     words = text.split()
     filtered_words = [word for word in words if word.lower() not in stop_words]
     return ' '.join(filtered_words)
 
-def remove_whitespace(text):
-    return text.strip()
-
-def remove_special_characters(text):
-    clean_text = re.sub(r'[^a-zA-Z0-9\s]', '', text)
-    return clean_text
-
 def preprocess_text(text):
-    text = remove_html_tags(text)
-    text = remove_urls(text)
-    text = convert_to_lowercase(text)
+    text = text.lower().strip()
+    text = remove_special_character(text)
     text = replace_chat_words(text)
-    text = remove_punctuation(text)
     text = remove_stopwords(text)
-    text = remove_whitespace(text)
-    text = remove_special_characters(text)
     return text
 
 def sentiment_analysis(input_txt):
