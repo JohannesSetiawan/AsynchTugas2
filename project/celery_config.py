@@ -40,7 +40,7 @@ def analyze(input_text, analyze_sent, analyze_spam, analyze_speech):
     if checkIsEmpty(input_text):
         return {'Error': 'Empty input!'}
     elif not (analyze_sent or analyze_spam or analyze_speech):
-        return {'Error': 'Nothing to analyze!'}
+        return {'Error': 'Not analyzed anything!'}
     else:
         result = perform_analysis(input_text, analyze_sent, analyze_spam, analyze_speech)
         return result
