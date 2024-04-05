@@ -11,6 +11,7 @@ import string
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics import classification_report
 from googletrans import Translator
+import os
 
 def translate_en(df):
     df['text'] = df['text'].apply(transalate)
@@ -97,7 +98,9 @@ def preprocess_text(text):
     return text
 
 def sentiment_analysis(input_txt):
-    df=pd.read_csv('sentiment.csv')
+    current_directory = os.path.dirname(os.path.realpath(__file__))
+    csv_file_path = os.path.join(current_directory, 'sentiment.csv')
+    df=pd.read_csv(csv_file_path)
 
     # Preprocessing
     df['text'] = df['text'].apply(preprocess_text)
@@ -130,7 +133,10 @@ def sentiment_analysis(input_txt):
     return res
 
 def spam_analysis(input_txt):
-    df=pd.read_csv('spam.csv', encoding='latin1')
+    current_directory = os.path.dirname(os.path.realpath(__file__))
+    csv_file_path = os.path.join(current_directory, 'spam.csv')
+    df=pd.read_csv(csv_file_path, encoding='latin1')
+
     df.columns=['target','text','null1','null2','null3']
     df = df.drop(columns=['null1','null2','null3'])
     df['target'] = df['target'].replace({'ham': 0, 'spam': 1})
@@ -160,7 +166,10 @@ def spam_analysis(input_txt):
     return res
 
 def hate_speech_offensive_languange_analysis(input_txt):
-    df=pd.read_csv('hate_speech.csv')
+    current_directory = os.path.dirname(os.path.realpath(__file__))
+    csv_file_path = os.path.join(current_directory, 'hate_speech.csv')
+    df=pd.read_csv(csv_file_path)
+
     df.columns=['id','count','hate_speech','offensive_language','neither', 'target','text']
     df = df.drop(columns=['id','count','hate_speech','offensive_language','neither'])
     df['text'] = df['text'].apply(preprocess_text)
@@ -190,16 +199,23 @@ def hate_speech_offensive_languange_analysis(input_txt):
         res.append({"text": input_txt[i], "result": res_txt})
     return res
 
-def analyze_all(input_text):
-    res_sentiment = sentiment_analysis(input_text)
-    res_spam = spam_analysis(input_text)
-    res_hate = hate_speech_offensive_languange_analysis(input_text)
+def perform_analysis(input_text, analyze_sent, analyze_spam, analyze_speech):
+    res_sentiment = ["Not analyzed"]
+    res_spam = ["Not analyzed"]
+    res_hate = ["Not analyzed"]
+
+    if analyze_sent:
+        res_sentiment = sentiment_analysis(input_text)
+
+    if analyze_spam:
+        res_spam = spam_analysis(input_text)
+
+    if analyze_speech:
+        res_hate = hate_speech_offensive_languange_analysis(input_text)
+
     result = {
         "sentiment" : res_sentiment,
         "spam" : res_spam,
         "hate_speech" : res_hate,
     }
     return result
-
-res = analyze_all(["Kamu pintar banget ya", "Kamu bodoh banget sih"])
-print(res)
