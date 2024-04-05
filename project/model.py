@@ -6,6 +6,6 @@ class RequestBody(BaseModel):
 
 class RequestBodyAnalyzeMoreThanOne(BaseModel):
     text: List[str] = []
-    analyze_sentiment: bool
-    analyze_spam: bool
-    analyze_hate_speech: bool
+    analyze_sentiment: bool = False
+    analyze_spam: bool = False
+    analyze_hate_speech: bool = False
