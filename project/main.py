@@ -3,12 +3,11 @@ from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from celery_config import analyze, analyze_hate_speech, analyze_sentiment, analyze_spam
 from model import RequestBody, RequestBodyAnalyzeMoreThanOne
-import json
 
 app = FastAPI()
 
 @app.get("/")
-def home():
+def mainpage():
     return JSONResponse({"Nama Webservice":"TextAnalyzer!!!",
                          "Kegunaan": "Web service ini bisa digunakan untuk menganalisis sentiment, spam, atau hate speech dari minimal 1 teks masukan",
                          "Bahasa":"Web service ini bisa digunakan untuk semua bahasa"})
