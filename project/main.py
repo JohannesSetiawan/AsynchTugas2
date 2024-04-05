@@ -23,22 +23,22 @@ def get_status(task_id):
     }
     return JSONResponse(result)
 
-@app.post("/analyze-sentiment", status_code=202)
+@app.post("/analyze-sentiment")
 def run_analyze_sentiment_task(input: RequestBody):
     task = analyze_sentiment.delay(input.text)
-    return JSONResponse({"task_id": task.id})
+    return JSONResponse({"task_id": task.id}, status_code = 202)
 
-@app.post("/analyze-spam", status_code=202)
+@app.post("/analyze-spam")
 def run_analyze_spam_task(input: RequestBody):
     task = analyze_spam.delay(input.text)
-    return JSONResponse({"task_id": task.id})
+    return JSONResponse({"task_id": task.id}, status_code = 202)
 
-@app.post("/analyze-hate-speech", status_code=202)
+@app.post("/analyze-hate-speech")
 def run_analyze_hate_speech_task(input: RequestBody):
     task = analyze_hate_speech.delay(input.text)
-    return JSONResponse({"task_id": task.id})
+    return JSONResponse({"task_id": task.id}, status_code = 202)
 
-@app.post("/analyze", status_code=202)
+@app.post("/analyze")
 def run_analyze_more_than_one_task(input: RequestBodyAnalyzeMoreThanOne):
     task = analyze.delay(input.text, input.analyze_sentiment, input.analyze_spam, input.analyze_hate_speech)
-    return JSONResponse({"task_id": task.id})
+    return JSONResponse({"task_id": task.id}, status_code = 202)
